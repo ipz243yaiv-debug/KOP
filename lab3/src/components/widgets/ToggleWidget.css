@@ -1,0 +1,64 @@
+.theme-display {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: -2px 0 14px;
+}
+
+.theme-name {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.theme-label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.toggle-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--secondary-text);
+  font-size: 12px;
+}
+
+.toggle-knob {
+  position: relative;
+  width: 34px;
+  height: 19px;
+  border-radius: 20px;
+  background: var(--border);
+  transition: background 150ms ease;
+}
+
+.toggle-knob::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: white;
+  content: '';
+  transition: transform 150ms ease;
+}
+
+.toggle-button.active .toggle-knob {
+  background: var(--accent);
+}
+
+.toggle-button.active .toggle-knob::after {
+  transform: translateX(15px);
+}
+
+.hint {
+  margin: auto 0 0;
+  padding-top: 12px;
+  color: var(--subtle-text);
+  font-size: 11px;
+}
