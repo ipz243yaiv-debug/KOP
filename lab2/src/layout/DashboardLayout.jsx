@@ -1,13 +1,15 @@
 import '../App.css';
-import CounterWidget from '../components/CounterWidget.jsx';
-import KpiCard from '../components/KpiCard.jsx';
-import PokemonListWidget from '../components/PokemonListWidget.jsx';
-import ToggleWidget from '../components/ToggleWidget.jsx';
+import CounterWidget from '../components/widgets/CounterWidget.jsx';
+import KpiCard from '../components/kpi/KpiCard.jsx';
+import PokemonTable from '../components/table/PokemonTable.jsx';
+import ToggleWidget from '../components/widgets/ToggleWidget.jsx';
 
 function DashboardLayout({
   kpiData,
   pokemons,
-  pokemonTypes,
+  isLoading,
+  error,
+  onRetry,
   isDarkTheme,
   onToggleTheme,
 }) {
@@ -19,7 +21,7 @@ function DashboardLayout({
           <div>
             <h1>Покедекс</h1>
           </div>
-          <span className="data-label"><span /> Локальні дані</span>
+          <span className="data-label"><span /> Дані з PokéAPI</span>
         </header>
 
         <section className="kpi-grid" aria-label="Статистика Покедексу">
@@ -28,8 +30,7 @@ function DashboardLayout({
               key={item.title}
               title={item.title}
               value={item.value}
-              change={item.change}
-              isPositive={item.isPositive}
+              description={item.description}
             />
           ))}
         </section>
@@ -42,7 +43,12 @@ function DashboardLayout({
           />
         </section>
 
-        <PokemonListWidget pokemons={pokemons} types={pokemonTypes} />
+        <PokemonTable
+          pokemons={pokemons}
+          isLoading={isLoading}
+          error={error}
+          onRetry={onRetry}
+        />
       </main>
     </div>
   );

@@ -56,6 +56,21 @@ th {
   text-transform: uppercase;
 }
 
+.sort-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.sort-button:hover {
+  color: var(--text);
+}
+
 th:first-child,
 td:first-child {
   padding-left: 23px;
@@ -82,6 +97,7 @@ td strong {
 
 .type-badge {
   display: inline-block;
+  margin: 2px 4px 2px 0;
   padding: 4px 9px;
   border-radius: 20px;
   background: var(--table-heading-background);
@@ -95,6 +111,14 @@ td strong {
   color: var(--muted);
   font-size: 13px;
   text-align: center;
+}
+
+.retry-button {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
 }
 
 @media (max-width: 420px) {

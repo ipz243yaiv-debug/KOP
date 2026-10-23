@@ -23,8 +23,7 @@ function CounterWidget() {
         <h2>Обране покоління</h2>
       </div>
       <div className="stepper">
-        <button
-          className="icon-button"
+        <button className="icon-button"
           type="button"
           onClick={decreaseGeneration}
           disabled={generation === 1}
