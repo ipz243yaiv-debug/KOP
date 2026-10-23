@@ -22,8 +22,47 @@
 
 Потрібно встановити [Node.js](https://nodejs.org/).
 
+
+
 У терміналі відкрий папку проєкту та виконай:
 
 ```bash
 npm install
 npm run dev
+
+
+## Структура проєкту
+
+```text
+lab2/
+├── index.html
+├── package.json
+├── package-lock.json
+├── src/
+│   ├── api/
+│   │   └── pokemonApi.js
+│   ├── components/
+│   │   ├── common/
+│   │   │   ├── EmptyState.jsx
+│   │   │   ├── ErrorMessage.jsx
+│   │   │   └── Loader.jsx
+│   │   ├── kpi/
+│   │   │   ├── KpiCard.jsx
+│   │   │   └── KpiCard.css
+│   │   ├── table/
+│   │   │   ├── PokemonTable.jsx
+│   │   │   └── PokemonTable.css
+│   │   └── widgets/
+│   │       ├── CounterWidget.jsx
+│   │       ├── CounterWidget.css
+│   │       ├── ToggleWidget.jsx
+│   │       └── ToggleWidget.css
+│   ├── hooks/
+│   │   └── usePokemonData.js
+│   ├── layout/
+│   │   └── DashboardLayout.jsx
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.css
+│   └── main.jsx
+└── .gitignore
