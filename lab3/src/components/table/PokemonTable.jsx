@@ -3,7 +3,7 @@ import ErrorMessage from '../common/ErrorMessage.jsx';
 import Loader from '../common/Loader.jsx';
 import './PokemonTable.css';
 
-function PokemonTable({pokemons, isLoading, error, onRetry}) {
+function PokemonTable({pokemons, generation, isLoading, error, onRetry}) {
     return (
         <section className="card pokemon-widget">
             <div className="list-heading">
@@ -22,6 +22,7 @@ function PokemonTable({pokemons, isLoading, error, onRetry}) {
                         <thead>
                         <tr>
                             <th>Покемон</th>
+                            <th>Покоління</th>
                             <th>Тип</th>
                             <th>HP</th>
                             <th>Атака</th>
@@ -39,6 +40,7 @@ function PokemonTable({pokemons, isLoading, error, onRetry}) {
                     </span>
                                     <strong>{pokemon.name}</strong>
                                 </td>
+                                <td>Gen {generation}</td>
                                 <td>
                                     {pokemon.types.map((type) => (
                                         <span className="type-badge" key={type}>

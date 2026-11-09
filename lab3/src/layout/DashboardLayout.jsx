@@ -11,8 +11,10 @@ function DashboardLayout({
                              isLoading,
                              error,
                              onRetry,
+                             generation,
                              filters,
-                             onFilterChange,
+                             control,
+                             onChangeGeneration,
                              onResetFilters,
                              isDarkTheme,
                              onToggleTheme,
@@ -29,8 +31,7 @@ function DashboardLayout({
                 </header>
 
                 <PokemonFilters
-                    filters={filters}
-                    onChange={onFilterChange}
+                    control={control}
                     onReset={onResetFilters}
                 />
 
@@ -39,14 +40,17 @@ function DashboardLayout({
                         <KpiCard
                             key={item.title}
                             title={item.title}
-                            value={item.value}
+                            value={isLoading || error ? '—' : item.value}
                             description={item.description}
                         />
                     ))}
                 </section>
 
                 <section className="widget-grid" aria-label="Віджети">
-                    <CounterWidget/>
+                    <CounterWidget
+                        generation={filters.generation}
+                        onChangeGeneration={onChangeGeneration}
+                    />
                     <ToggleWidget
                         isDarkTheme={isDarkTheme}
                         onToggleTheme={onToggleTheme}
@@ -55,6 +59,7 @@ function DashboardLayout({
 
                 <PokemonTable
                     pokemons={pokemons}
+                    generation={generation}
                     isLoading={isLoading}
                     error={error}
                     onRetry={onRetry}
