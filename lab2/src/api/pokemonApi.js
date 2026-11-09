@@ -1,19 +1,24 @@
-const POKEMON_LIST_URL = 'https://pokeapi.co/api/v2/pokemon?limit=20';
-
-export async function fetchPokemons(signal) {
-  const listResponse = await fetch(POKEMON_LIST_URL, { signal });
-  if (!listResponse.ok) {
-    throw new Error('Не вдалося завантажити список покемонів.');
+export async function fetchPokemons(generation, signal) {
+  const response = await fetch(`https://pokeapi.co/api/v2/generation/${generation}/`, { signal });
+  if (!response.ok) {
+    throw new Error('Не вдалося завантажити покоління покемонів.');
   }
 
-  const listData = await listResponse.json();
+  const data = await response.json();
+  const species = [...data.pokemon_species].sort((a, b) => {
+    const firstId = Number(a.url.split('/').filter(Boolean).pop());
+    const secondId = Number(b.url.split('/').filter(Boolean).pop());
+    return firstId - secondId;
+  }).slice(0, 20);
+
   const pokemonDetails = await Promise.all(
-    listData.results.map(async (pokemon) => {
-      const response = await fetch(pokemon.url, { signal });
-      if (!response.ok) {
+    species.map(async (pokemon) => {
+      const id = pokemon.url.split('/').filter(Boolean).pop();
+      const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`, { signal });
+      if (!pokemonResponse.ok) {
         throw new Error(`Не вдалося завантажити дані про ${pokemon.name}.`);
       }
-      return response.json();
+      return pokemonResponse.json();
     }),
   );
 

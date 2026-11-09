@@ -4,13 +4,15 @@ import ErrorMessage from '../common/ErrorMessage.jsx';
 import Loader from '../common/Loader.jsx';
 import './PokemonTable.css';
 
-function PokemonTable({ pokemons, isLoading, error, onRetry }) {
-  const [selectedType, setSelectedType] = useState('Усі');
+function PokemonTable({ pokemons, isLoading, error, onRetry, generation, selectedType, onChangeType }) {
   const [sortField, setSortField] = useState('name');
   const [sortDirection, setSortDirection] = useState('asc');
   const types = [
     'Усі',
-    ...new Set(pokemons.flatMap((pokemon) => pokemon.types)),
+    ...new Set([
+      ...(selectedType === 'Усі' ? [] : [selectedType]),
+      ...pokemons.flatMap((pokemon) => pokemon.types),
+    ]),
   ];
   const visiblePokemons = useMemo(() => {
     const filteredPokemons = pokemons.filter(
@@ -51,12 +53,12 @@ function PokemonTable({ pokemons, isLoading, error, onRetry }) {
   return (
     <section className="card pokemon-widget">
       <div className="list-heading">
-        <h2>Покемони</h2>
+        <h2>Перші 20 покемонів покоління</h2>
         <label className="filter-control">
           <span>Тип</span>
           <select
             value={selectedType}
-            onChange={(event) => setSelectedType(event.target.value)}
+            onChange={(event) => onChangeType(event.target.value)}
           >
             {types.map((type) => (
               <option key={type} value={type}>
@@ -89,6 +91,7 @@ function PokemonTable({ pokemons, isLoading, error, onRetry }) {
                     {sortLabel('name', 'Покемон')}
                   </button>
                 </th>
+                <th>Покоління</th>
                 <th>Тип</th>
                 <th>HP</th>
                 <th>
@@ -114,6 +117,7 @@ function PokemonTable({ pokemons, isLoading, error, onRetry }) {
                     </span>
                     <strong>{pokemon.name}</strong>
                   </td>
+                  <td>Gen {generation}</td>
                   <td>
                     {pokemon.types.map((type) => (
                       <span className="type-badge" key={type}>

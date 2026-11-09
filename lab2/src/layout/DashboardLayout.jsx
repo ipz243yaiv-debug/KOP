@@ -10,6 +10,10 @@ function DashboardLayout({
   isLoading,
   error,
   onRetry,
+  generation,
+  onChangeGeneration,
+  selectedType,
+  onChangeType,
   isDarkTheme,
   onToggleTheme,
 }) {
@@ -29,14 +33,14 @@ function DashboardLayout({
             <KpiCard
               key={item.title}
               title={item.title}
-              value={item.value}
+              value={isLoading || error ? '—' : item.value}
               description={item.description}
             />
           ))}
         </section>
 
         <section className="widget-grid" aria-label="Віджети">
-          <CounterWidget />
+          <CounterWidget generation={generation} onChangeGeneration={onChangeGeneration} />
           <ToggleWidget
             isDarkTheme={isDarkTheme}
             onToggleTheme={onToggleTheme}
@@ -48,6 +52,9 @@ function DashboardLayout({
           isLoading={isLoading}
           error={error}
           onRetry={onRetry}
+          generation={generation}
+          selectedType={selectedType}
+          onChangeType={onChangeType}
         />
       </main>
     </div>

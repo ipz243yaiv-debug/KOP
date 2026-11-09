@@ -4,7 +4,13 @@ import DashboardLayout from './layout/DashboardLayout.jsx';
 
 function App() {
     const [isDarkTheme, setIsDarkTheme] = useState(false);
-    const {pokemons, isLoading, error, kpiData, retryLoading } = usePokemonData();
+    const [generation, setGeneration] = useState(1);
+    const [selectedType, setSelectedType] = useState('Усі');
+    const { pokemons, isLoading, error, kpiData, retryLoading } = usePokemonData(generation, selectedType);
+
+    function changeGeneration(value) {
+        setGeneration(value);
+    }
 
     return (
         <DashboardLayout
@@ -13,6 +19,10 @@ function App() {
             isLoading={isLoading}
             error={error}
             onRetry={retryLoading}
+            generation={generation}
+            onChangeGeneration={changeGeneration}
+            selectedType={selectedType}
+            onChangeType={setSelectedType}
             isDarkTheme={isDarkTheme}
             onToggleTheme={() => setIsDarkTheme((currentTheme) => !currentTheme)}
         />

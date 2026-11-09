@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchPokemons } from '../api/pokemonApi.js';
 
-function usePokemonData() {
+function usePokemonData(generation, selectedType) {
   const [pokemons, setPokemons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -14,8 +14,10 @@ function usePokemonData() {
       setIsLoading(true);
       setError('');
       try {
-        const loadedPokemons = await fetchPokemons(controller.signal);
-        setPokemons(loadedPokemons);
+        const loadedPokemons = await fetchPokemons(generation, controller.signal);
+        if (!controller.signal.aborted) {
+          setPokemons(loadedPokemons);
+        }
       } catch (requestError) {
         if (requestError.name !== 'AbortError') {
           setError(requestError.message);
@@ -29,27 +31,31 @@ function usePokemonData() {
 
     loadPokemons();
     return () => controller.abort();
-  }, [reloadCount]);
+  }, [generation, reloadCount]);
 
-  const averageStats = pokemons.length
+  const filteredPokemons = pokemons.filter(
+    (pokemon) => selectedType === 'Усі' || pokemon.types.includes(selectedType),
+  );
+
+  const averageStats = filteredPokemons.length
     ? Math.round(
-        pokemons.reduce(
+        filteredPokemons.reduce(
           (total, pokemon) =>
             total + pokemon.hp + pokemon.attack + pokemon.defense,
           0,
-        ) / (pokemons.length * 3),
+        ) / (filteredPokemons.length * 3),
       )
     : 0;
   const kpiData = [
     {
-      title: 'Покемонів завантажено',
-      value: pokemons.length,
-      description: 'завантажено з PokéAPI',
+      title: 'Покемонів у вибірці',
+      value: filteredPokemons.length,
+      description: 'з урахуванням типу',
     },
     {
       title: 'Водяних покемонів',
-      value: pokemons.filter((pokemon) => pokemon.types.includes('water')).length,
-      description: 'у завантаженому списку',
+      value: filteredPokemons.filter((pokemon) => pokemon.types.includes('water')).length,
+      description: 'у поточній вибірці',
     },
     {
       title: 'Середнє базових характеристик',
