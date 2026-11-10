@@ -4,7 +4,7 @@ import ErrorMessage from '../common/ErrorMessage.jsx';
 import Loader from '../common/Loader.jsx';
 import './PokemonTable.css';
 
-function PokemonTable({ pokemons, isLoading, error, onRetry, generation, selectedType, onChangeType }) {
+function PokemonTable({ pokemons, isLoading, error, failedCount, onRetry, generation, selectedType, onChangeType }) {
   const [sortField, setSortField] = useState('name');
   const [sortDirection, setSortDirection] = useState('asc');
   const types = [
@@ -53,7 +53,7 @@ function PokemonTable({ pokemons, isLoading, error, onRetry, generation, selecte
   return (
     <section className="card pokemon-widget">
       <div className="list-heading">
-        <h2>Перші 20 покемонів покоління</h2>
+        <h2>Покемони покоління</h2>
         <label className="filter-control">
           <span>Тип</span>
           <select
@@ -69,14 +69,19 @@ function PokemonTable({ pokemons, isLoading, error, onRetry, generation, selecte
         </label>
       </div>
 
-      {isLoading ? (
-        <Loader />
-      ) : error ? (
+      {isLoading && <Loader />}
+      {failedCount > 0 && (
+        <div role="status">
+          <p>Не вдалося завантажити покемонів: {failedCount}. Показано доступні дані.</p>
+          <button className="retry-button" type="button" onClick={onRetry}>Спробувати ще раз</button>
+        </div>
+      )}
+      {error ? (
         <ErrorMessage message={error} onRetry={onRetry} />
       ) : pokemons.length === 0 ? (
-        <EmptyState>API не повернуло жодного покемона.</EmptyState>
+        !isLoading && <EmptyState>API не повернуло жодного покемона.</EmptyState>
       ) : visiblePokemons.length === 0 ? (
-        <EmptyState>Для цього типу покемонів поки немає.</EmptyState>
+        !isLoading && <EmptyState>Для цього типу покемонів поки немає.</EmptyState>
       ) : (
         <div className="table-scroll">
           <table>

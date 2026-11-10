@@ -1,31 +1,32 @@
 import { useEffect, useState } from 'react';
 import { fetchPokemons } from '../api/pokemonApi.js';
 
-function usePokemonData(generation, selectedType) {
+function usePokemonData(generation) {
   const [pokemons, setPokemons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [failedCount, setFailedCount] = useState(0);
   const [reloadCount, setReloadCount] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
 
     async function loadPokemons() {
+      setPokemons([]);
       setIsLoading(true);
       setError('');
+      setFailedCount(0);
       try {
-        const loadedPokemons = await fetchPokemons(generation, controller.signal);
-        if (!controller.signal.aborted) {
-          setPokemons(loadedPokemons);
-        }
+        const failed = await fetchPokemons(generation, controller.signal, (pokemon) => {
+          if (!controller.signal.aborted) {
+            setPokemons((current) => [...current, pokemon]);
+          }
+        });
+        if (!controller.signal.aborted) setFailedCount(failed);
       } catch (requestError) {
-        if (requestError.name !== 'AbortError') {
-          setError(requestError.message);
-        }
+        if (!controller.signal.aborted) setError(requestError.message);
       } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false);
-        }
+        if (!controller.signal.aborted) setIsLoading(false);
       }
     }
 
@@ -33,42 +34,11 @@ function usePokemonData(generation, selectedType) {
     return () => controller.abort();
   }, [generation, reloadCount]);
 
-  const filteredPokemons = pokemons.filter(
-    (pokemon) => selectedType === 'Усі' || pokemon.types.includes(selectedType),
-  );
-
-  const averageStats = filteredPokemons.length
-    ? Math.round(
-        filteredPokemons.reduce(
-          (total, pokemon) =>
-            total + pokemon.hp + pokemon.attack + pokemon.defense,
-          0,
-        ) / (filteredPokemons.length * 3),
-      )
-    : 0;
-  const kpiData = [
-    {
-      title: 'Покемонів у вибірці',
-      value: filteredPokemons.length,
-      description: 'з урахуванням типу',
-    },
-    {
-      title: 'Водяних покемонів',
-      value: filteredPokemons.filter((pokemon) => pokemon.types.includes('water')).length,
-      description: 'у поточній вибірці',
-    },
-    {
-      title: 'Середнє базових характеристик',
-      value: averageStats,
-      description: 'середнє HP, атаки та захисту',
-    },
-  ];
-
   function retryLoading() {
     setReloadCount((currentCount) => currentCount + 1);
   }
 
-  return { pokemons, isLoading, error, kpiData, retryLoading };
+  return { pokemons, isLoading, error, failedCount, retryLoading };
 }
 
 export default usePokemonData;

@@ -6,7 +6,7 @@ function App() {
     const [isDarkTheme, setIsDarkTheme] = useState(false);
     const [generation, setGeneration] = useState(1);
     const [selectedType, setSelectedType] = useState('Усі');
-    const { pokemons, isLoading, error, kpiData, retryLoading } = usePokemonData(generation, selectedType);
+    const { pokemons, isLoading, error, failedCount, retryLoading } = usePokemonData(generation);
 
     function changeGeneration(value) {
         setGeneration(value);
@@ -14,10 +14,10 @@ function App() {
 
     return (
         <DashboardLayout
-            kpiData={kpiData}
             pokemons={pokemons}
             isLoading={isLoading}
             error={error}
+            failedCount={failedCount}
             onRetry={retryLoading}
             generation={generation}
             onChangeGeneration={changeGeneration}
