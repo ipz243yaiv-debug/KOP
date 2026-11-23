@@ -55,10 +55,10 @@ function PokemonFilters({control, onReset}) {
                 <label className="form-field">
                     <span>Кількість результатів</span>
                     <Controller name="limit" control={control} render={({field}) => (
-                        <select {...field} onChange={(event) => field.onChange(Number(event.target.value))}>
-                            <option value={10}>10</option>
-                            <option value={20}>20</option>
-                            <option value={50}>50</option>
+                        <select {...field}>
+                            <option value="all">Усі</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
                         </select>
                     )} />
                 </label>
