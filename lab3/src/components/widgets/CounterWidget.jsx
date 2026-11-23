@@ -1,19 +1,17 @@
-import { useState } from 'react';
 import './CounterWidget.css';
 
-function CounterWidget() {
-  const [generation, setGeneration] = useState(1);
+function CounterWidget({ generation, onChangeGeneration }) {
 
   function decreaseGeneration() {
-    setGeneration((currentGeneration) => Math.max(1, currentGeneration - 1));
+    onChangeGeneration(Math.max(1, generation - 1));
   }
 
   function increaseGeneration() {
-    setGeneration((currentGeneration) => Math.min(9, currentGeneration + 1));
+    onChangeGeneration(Math.min(9, generation + 1));
   }
 
   function resetGeneration() {
-    setGeneration(1);
+    onChangeGeneration(1);
   }
 
   return (
