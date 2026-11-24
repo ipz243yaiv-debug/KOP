@@ -1,0 +1,3 @@
+.favorite-button { display: inline-flex; align-items: center; gap: 5px; padding: 6px 9px; border: 1px solid var(--border); border-radius: 8px; color: var(--secondary-text); background: var(--surface); white-space: nowrap; font-size: 13px; }
+.favorite-button span:first-child { font-size: 20px; line-height: 1; }
+.favorite-button:hover, .favorite-button.is-favorite { color: var(--accent); border-color: var(--accent); }
