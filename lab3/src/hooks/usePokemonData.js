@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { fetchPokemons } from '../api/pokemonApi.js';
+import { filterPokemons } from '../utils/filterPokemons.js';
 
 function usePokemonData(filters) {
   const [pokemons, setPokemons] = useState([]);
@@ -39,16 +40,7 @@ function usePokemonData(filters) {
 
   const data = useMemo(() => {
     if (loadedGeneration !== generation) return [];
-    const searchText = search.trim().toLowerCase();
-    const filtered = pokemons.filter((pokemon) => pokemon.name.toLowerCase().includes(searchText) && (!type || pokemon.types.includes(type)), );
-    const [field, direction] = sortBy.split('-');
-    filtered.sort((first, second) => {
-      const comparison = typeof first[field] === 'string'
-        ? first[field].localeCompare(second[field])
-        : first[field] - second[field];
-      return direction === 'desc' ? -comparison : comparison;
-    });
-    return limit === 'all' ? filtered : filtered.slice(0, Number(limit));
+    return filterPokemons(pokemons, { search, type, sortBy, limit });
   }, [pokemons, loadedGeneration, generation, search, type, sortBy, limit]);
 
   function retry() {
