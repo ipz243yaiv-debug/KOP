@@ -1,0 +1,11 @@
+.back-link { display: inline-block; margin-bottom: 18px; color: var(--accent); font-weight: 600; }
+.details-card { padding: 24px; margin-bottom: 18px; }
+.details-heading { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; }
+.details-heading img { width: 120px; height: 120px; object-fit: contain; }
+.details-name { font-size: 28px; text-transform: capitalize; margin-bottom: 8px; }
+.details-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; }
+.details-list dt { color: var(--secondary-text); font-size: 13px; }
+.details-list dd { margin: 5px 0 0; font-weight: 600; }
+.details-stats { display: grid; gap: 8px; max-width: 360px; padding: 0; list-style: none; }
+.details-stats li { display: flex; justify-content: space-between; gap: 20px; }
+.details-theme { max-width: 380px; margin-top: 18px; }
